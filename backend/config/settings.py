@@ -35,7 +35,10 @@ CORS_ALLOWED_ORIGINS = os.environ.get(
     "http://localhost:3000"
 ).split(",")
 
-
+CSRF_TRUSTED_ORIGINS = os.environ.get(
+    "CSRF_TRUSTED_ORIGINS",
+    "http://localhost:3000"
+).split(",")
 # Application definition
 
 INSTALLED_APPS = [
