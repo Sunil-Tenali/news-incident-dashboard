@@ -1,0 +1,37 @@
+[
+  {
+    "title": "Fire breaks out at warehouse in Vijayawada, no casualties reported",
+    "source": "Sample News",
+    "published_at": "2026-06-10T10:30:00+05:30",
+    "url": "https://example.com/fire-vijayawada",
+    "description": "A fire broke out at a warehouse in Vijayawada on Wednesday morning. Fire officials said no casualties were reported."
+  },
+  {
+    "title": "Heavy rain causes waterlogging in Hyderabad, traffic affected",
+    "source": "Sample News",
+    "published_at": "2026-06-10T12:00:00+05:30",
+    "url": "https://example.com/rain-hyderabad",
+    "description": "Several roads in Hyderabad saw waterlogging after heavy rain, causing traffic disruption."
+  },
+  {
+    "title": "Bridge collapse reported near Rajahmundry after heavy rainfall",
+    "source": "Sample News",
+    "published_at": "2026-06-11T08:45:00+05:30",
+    "url": "https://example.com/bridge-collapse-rajahmundry",
+    "description": "Officials said traffic was diverted after a bridge section collapsed near Rajahmundry. No deaths were reported."
+  },
+  {
+    "title": "Food poisoning suspected at hostel in Warangal, students hospitalised",
+    "source": "Sample News",
+    "published_at": "2026-06-11T15:15:00+05:30",
+    "url": "https://example.com/food-poisoning-warangal",
+    "description": "Several students were hospitalised after suspected food poisoning at a hostel in Warangal."
+  },
+  {
+    "title": "Power outage hits parts of Gachibowli after transformer fault",
+    "source": "Sample News",
+    "published_at": "2026-06-12T09:00:00+05:30",
+    "url": "https://example.com/power-outage-gachibowli",
+    "description": "Residents in parts of Gachibowli reported power supply disruption after a transformer fault."
+  }
+]

@@ -1,0 +1,93 @@
+# Environment files
+
+.env
+.env.*
+!.env.example
+frontend/.env.local
+frontend/.env.*.local
+backend/.env
+
+# Python / Django
+
+**pycache**/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+.eggs/
+dist/
+build/
+
+# Virtual environments
+
+venv/
+env/
+.venv/
+backend/venv/
+backend/env/
+backend/.venv/
+
+# Django database / local files
+
+backend/db.sqlite3
+backend/db.sqlite3-journal
+*.sqlite3
+*.sqlite3-journal
+
+# Django collected/static runtime files
+
+backend/staticfiles/
+backend/media/
+
+# Logs
+
+*.log
+logs/
+
+# Node / Next.js
+
+node_modules/
+frontend/node_modules/
+.next/
+frontend/.next/
+out/
+frontend/out/
+.next-cache/
+
+# Build/cache
+
+.cache/
+.parcel-cache/
+.turbo/
+frontend/.turbo/
+
+# TypeScript
+
+*.tsbuildinfo
+next-env.d.ts
+
+# OS files
+
+.DS_Store
+Thumbs.db
+
+# IDE/editor files
+
+.vscode/
+.idea/
+
+# Coverage/test cache
+
+.coverage
+htmlcov/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Deployment/local runtime
+
+.vercel/
+.netlify/
+render.yaml.local
+railway.json.local
