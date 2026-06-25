@@ -27,14 +27,14 @@ Review Status: Needs Review
 
 The dashboard allows a reviewer to:
 
-- Run news ingestion
-- View dashboard summary counts
-- Search and filter detected incidents
-- View incidents on a map
-- Open incident detail pages
-- Accept or reject incidents
-- Edit extracted incident fields
-- View possible duplicate incidents
+* Run news ingestion
+* View dashboard summary counts
+* Search and filter detected incidents
+* View incidents on a map
+* Open incident detail pages
+* Accept or reject incidents
+* Edit extracted incident fields
+* View possible duplicate incidents
 
 ---
 
@@ -42,43 +42,43 @@ The dashboard allows a reviewer to:
 
 ### Backend
 
-- Django
-- Django REST Framework
-- Token Authentication
-- SQLite for local development
-- PostgreSQL-ready configuration for deployment
-- Feedparser for RSS parsing
-- OpenStreetMap Nominatim for geocoding
+* Django
+* Django REST Framework
+* Token Authentication
+* SQLite for local development
+* PostgreSQL-ready configuration for deployment
+* Feedparser for RSS parsing
+* OpenStreetMap Nominatim for geocoding
 
 ### Frontend
 
-- Next.js
-- TypeScript
-- TailwindCSS
-- React Leaflet
-- OpenStreetMap tiles
+* Next.js
+* TypeScript
+* TailwindCSS
+* React Leaflet
+* OpenStreetMap tiles
 
 ---
 
 ## Core Features
 
-- Login/logout
-- Protected dashboard
-- Run ingestion action
-- Google News RSS ingestion
-- Raw article storage
-- Rule-based incident classification
-- Severity detection
-- Location extraction from article title/snippet
-- Local location reference matching
-- Geocoding fallback
-- Basic duplicate scoring
-- Dashboard summary cards
-- Incident table with search, filters, and pagination
-- Map view with incident markers
-- Incident detail/edit page
-- Accept/reject/edit review workflow
-- Possible duplicate candidate display on incident detail page
+* Login/logout
+* Protected dashboard
+* Run ingestion action
+* Google News RSS ingestion
+* Raw article storage
+* Rule-based incident classification
+* Severity detection
+* Location extraction from article title/snippet
+* Local location reference matching
+* Geocoding fallback
+* Basic duplicate scoring
+* Dashboard summary cards
+* Incident table with search, filters, and pagination
+* Map view with incident markers
+* Incident detail/edit page
+* Accept/reject/edit review workflow
+* Possible duplicate candidate display on incident detail page
 
 ---
 
@@ -219,7 +219,7 @@ POST    /api/incidents/:id/reject/
 GET     /api/incidents/map/
 GET     /api/incidents/:id/duplicates/
 
-GET     /api/duplicates/    
+GET     /api/duplicates/
 ```
 
 ---
@@ -301,22 +301,40 @@ Contains local test feed items for sample ingestion mode.
 
 ## Known Limitations
 
-- Classification is rule-based and may miss incidents if the article uses unexpected wording.
-- Google News RSS summaries may be inconsistent, so summaries are cleaned during ingestion.
-- Location extraction is basic and works best when the article clearly mentions a known city or district.
-- Geocoding can fail or return ambiguous results for vague locations.
-- Duplicate detection is heuristic and does not automatically merge incidents.
-- Map only shows incidents with valid latitude and longitude.
-- Ingestion currently runs synchronously from the API request; a production version should use background jobs.
+* Classification is rule-based and may miss incidents if the article uses unexpected wording.
+* Google News RSS summaries may be inconsistent, so summaries are cleaned during ingestion.
+* Location extraction is basic and works best when the article clearly mentions a known city or district.
+* Geocoding can fail or return ambiguous results for vague locations.
+* Duplicate detection is heuristic and does not automatically merge incidents.
+* Map only shows incidents with valid latitude and longitude.
+* Ingestion currently runs synchronously from the API request; a production version should use background jobs.
 
 ---
 
+## Deployment Notes
+
+The app can be deployed with:
+
+* Backend on Render/Railway/Fly.io
+* PostgreSQL database
+* Frontend on Vercel/Netlify
+
+For production:
+
+* Set `DEBUG=False`
+* Configure `ALLOWED_HOSTS`
+* Configure CORS for frontend domain
+* Use PostgreSQL instead of SQLite
+* Set a secure Django `SECRET_KEY`
+* Run migrations after deployment
+
+---
 
 ## Test Credentials
 
 ```text
-Username: Test
-Password: Test@123
+Username: reviewer
+Password: <provide-created-password>
 ```
 
 Replace this with the actual test credentials created for review.
