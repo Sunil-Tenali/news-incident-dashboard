@@ -1,3 +1,5 @@
+# Turns feed items into stored raw articles and reviewer-ready incidents.
+
 from django.db import IntegrityError
 from django.utils.dateparse import parse_datetime
 
@@ -58,6 +60,7 @@ def create_incident_from_article(raw_article, default_category="Other"):
         description=raw_article.description,
     )
 
+    # Save low-confidence locations too; dropping them would hide cases a reviewer can fix.
     incident = Incident.objects.create(
         source_article=raw_article,
         category=classification["category"],
@@ -94,6 +97,7 @@ def run_ingestion(use_sample=False, max_items_per_query=5):
         sample_items = load_sample_feed_items()
         articles = [normalize_sample_item(item) for item in sample_items]
 
+        # Shape the sample feed like a live feed so the main ingest path stays the same.
         feed_sources = [{
             "name": "Sample Local Feed",
             "query": "sample local feed",
@@ -127,6 +131,7 @@ def run_ingestion(use_sample=False, max_items_per_query=5):
 
     for feed_source in feed_sources:
         matched_query = feed_source["query"]
+        # Feed defaults are just a nudge; the classifier still gets the final say.
         default_category = feed_source.get("default_category", "Other")
 
         for article_data in feed_source["articles"]:
@@ -146,6 +151,7 @@ def run_ingestion(use_sample=False, max_items_per_query=5):
                 )
 
                 if not created:
+                    # Skip known URLs early so classification and geocoding are not repeated.
                     result["raw_articles_skipped_as_duplicates"] += 1
                     continue
 
@@ -162,6 +168,7 @@ def run_ingestion(use_sample=False, max_items_per_query=5):
                     result["irrelevant_articles_skipped"] += 1
 
             except IntegrityError:
+                # Covers the rare case where the same URL lands while another run is saving it.
                 result["raw_articles_skipped_as_duplicates"] += 1
 
             except Exception as error:

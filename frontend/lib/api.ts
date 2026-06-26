@@ -1,4 +1,7 @@
+// Shared API helpers and response shapes for the dashboard frontend.
+
 const API_BASE_URL =
+  // Keep local setup working unless the deployment overrides the backend URL.
   process.env.NEXT_PUBLIC_API_BASE_URL || "http://127.0.0.1:8000/api";
 
 export type LoginResponse = {
@@ -80,6 +83,7 @@ export type RawArticle = {
 
 export type IncidentDetail = {
   id: number;
+  // Detail views need the untouched article beside the editable incident fields.
   source_article: RawArticle;
   category: string;
   summary: string;
@@ -139,6 +143,7 @@ export async function getIncidents(params: IncidentQueryParams = {}) {
   const searchParams = new URLSearchParams();
 
   Object.entries(params).forEach(([key, value]) => {
+    // Empty filters should disappear from the URL instead of narrowing results.
     if (value !== undefined && value !== "") {
       searchParams.set(key, String(value));
     }
@@ -163,6 +168,7 @@ export async function rejectIncident(id: number) {
 }
 
 export function getToken() {
+  // Some helpers are imported during rendering, where localStorage does not exist.
   if (typeof window === "undefined") {
     return null;
   }
@@ -194,6 +200,7 @@ async function apiRequest<T>(
   const response = await fetch(`${API_BASE_URL}${path}`, {
     ...options,
     headers,
+    // Review actions should always come back from the latest backend state.
     cache: "no-store",
   });
 

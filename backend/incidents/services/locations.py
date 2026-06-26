@@ -1,3 +1,5 @@
+# Extracts local place hints and coordinates from article text.
+
 import csv
 import re
 from pathlib import Path
@@ -38,6 +40,7 @@ def find_location_from_reference(text):
         return None
 
     matched_locations.sort(
+        # Prefer "New Delhi" over "Delhi" when both appear in the same text.
         key=lambda row: len(row["place_name"]),
         reverse=True
     )
@@ -55,6 +58,7 @@ def find_location_from_reference(text):
 
 
 def guess_location_phrase(text):
+    # Keep guesses short so a headline fragment does not become the "location".
     patterns = [
         r"\bin\s+([A-Z][a-zA-Z]+(?:\s+[A-Z][a-zA-Z]+){0,2})",
         r"\bnear\s+([A-Z][a-zA-Z]+(?:\s+[A-Z][a-zA-Z]+){0,2})",
@@ -62,6 +66,7 @@ def guess_location_phrase(text):
     ]
 
     ignored_words = {
+        # These are common capitalized matches in news text, but not useful places here.
         "Wednesday",
         "Thursday",
         "Friday",
@@ -97,6 +102,7 @@ def geocode_location(location_text):
                 "limit": 1,
             },
             headers={
+                # Nominatim asks clients to identify themselves; keep requests easy to trace.
                 "User-Agent": "news-incident-mapping-dashboard/1.0"
             },
             timeout=10,
@@ -110,6 +116,7 @@ def geocode_location(location_text):
 
         result = data[0]
 
+        # External coordinates help the map, but local state/district fields stay blank.
         return {
             "location_text": location_text,
             "state": "",
@@ -126,6 +133,7 @@ def geocode_location(location_text):
 def extract_location(title, description):
     combined_text = f"{title} {description}".strip()
 
+    # Try the local reference first; known places are faster and less noisy than geocoding.
     reference_match = find_location_from_reference(combined_text)
 
     if reference_match:
@@ -138,6 +146,7 @@ def extract_location(title, description):
     if geocoded_location:
         return geocoded_location
 
+    # Keep the guessed phrase even without coordinates so the review screen has a clue.
     return {
         "location_text": guessed_location,
         "state": "",

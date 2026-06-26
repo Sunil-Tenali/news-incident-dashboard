@@ -44,6 +44,7 @@ class Incident(models.Model):
         on_delete=models.CASCADE,
         related_name="incidents"
     )
+    # Keep the raw article separate so reviewers can compare it with the extracted incident.
 
     category = models.CharField(
         max_length=100,

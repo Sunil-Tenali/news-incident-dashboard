@@ -1,5 +1,7 @@
 "use client";
 
+// Reviewer table for searching, filtering, and deciding incident records.
+
 import { FormEvent, useEffect, useState } from "react";
 import Link from "next/link";
 import {
@@ -46,6 +48,7 @@ export default function IncidentTable({ onChanged }: IncidentTableProps) {
     const [searchInput, setSearchInput] = useState("");
     const [stateInput, setStateInput] = useState("");
 
+    // Keep typed text separate so the table does not refetch on every keystroke.
     const [appliedSearch, setAppliedSearch] = useState("");
     const [appliedState, setAppliedState] = useState("");
 
@@ -85,6 +88,7 @@ export default function IncidentTable({ onChanged }: IncidentTableProps) {
     function handleSearchSubmit(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
 
+        // A new search can make the current page number invalid.
         setPage(1);
         setAppliedSearch(searchInput.trim());
         setAppliedState(stateInput.trim());
@@ -106,6 +110,7 @@ export default function IncidentTable({ onChanged }: IncidentTableProps) {
             setActionLoadingId(id);
             await acceptIncident(id);
             await loadIncidents();
+            // The summary cards live outside this table, so nudge the parent after changes.
             onChanged?.();
         } catch (err) {
             setError(err instanceof Error ? err.message : "Failed to accept incident.");
@@ -119,6 +124,7 @@ export default function IncidentTable({ onChanged }: IncidentTableProps) {
             setActionLoadingId(id);
             await rejectIncident(id);
             await loadIncidents();
+            // Keep the dashboard counts aligned with reviewer decisions.
             onChanged?.();
         } catch (err) {
             setError(err instanceof Error ? err.message : "Failed to reject incident.");

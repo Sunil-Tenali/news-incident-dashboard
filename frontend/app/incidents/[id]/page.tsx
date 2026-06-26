@@ -123,6 +123,7 @@ export default function IncidentDetailPage() {
         }
     }
 
+    // Accept/reject/edit are explicit reviewer choices, separate from extraction.
     async function handleAccept() {
         try {
             setError("");

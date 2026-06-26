@@ -1,3 +1,5 @@
+# Scores possible incident duplicates without merging reviewer records.
+
 from datetime import timedelta
 from difflib import SequenceMatcher
 
@@ -16,6 +18,7 @@ def similarity_score(text_a, text_b):
 
 
 def calculate_duplicate_score(new_incident, existing_incident):
+    # News copies rarely match exactly, so combine a few weak signals instead.
     score = 0
 
     if new_incident.category == existing_incident.category:
@@ -41,6 +44,7 @@ def calculate_duplicate_score(new_incident, existing_incident):
         difference = abs(time_a - time_b)
 
         if difference <= timedelta(hours=24):
+            # Same-day reports are more likely to describe the same incident.
             score += 15
 
     return round(score, 2)
@@ -60,6 +64,8 @@ def mark_possible_duplicate(incident):
         best_score = max(best_score, score)
 
     if best_score >= 65:
+        # High enough to warn the reviewer, but still below "trust it blindly".
+        # This is only a duplicate hint, not an automatic merge decision.
         incident.is_possible_duplicate = True
         incident.duplicate_score = best_score
         incident.save(update_fields=[
@@ -73,6 +79,7 @@ def mark_possible_duplicate(incident):
 def find_duplicate_candidates(incident, threshold=50):
     Incident = get_incident_model()
 
+    # Use a lower cutoff here so the detail page can show near misses too.
     existing_incidents = Incident.objects.select_related("source_article").exclude(
         id=incident.id
     )

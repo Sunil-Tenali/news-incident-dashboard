@@ -105,6 +105,7 @@ class IncidentViewSet(viewsets.ModelViewSet):
         return IncidentListSerializer
 
     def perform_update(self, serializer):
+        # Manual edits should stand out from untouched extraction results.
         serializer.save(review_status=Incident.ReviewStatus.EDITED)
 
     @action(detail=True, methods=["post"])
@@ -146,6 +147,7 @@ class IncidentViewSet(viewsets.ModelViewSet):
         return Response(response_data)
     @action(detail=False, methods=["get"], url_path="map")
     def map(self, request):
+        # Leaflet can only plot incidents that already have usable coordinates.
         incidents = (
             self.get_queryset()
             .filter(latitude__isnull=False, longitude__isnull=False)

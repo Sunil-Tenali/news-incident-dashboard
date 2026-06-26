@@ -1,5 +1,7 @@
 "use client";
 
+// Browser-side Leaflet map for incidents that already have coordinates.
+
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
@@ -9,6 +11,7 @@ import { getMapIncidents, Incident } from "@/lib/api";
 const DEFAULT_CENTER: [number, number] = [16.5062, 80.6480];
 
 function createIncidentIcon(category: string) {
+  // A small text marker avoids depending on Leaflet's default image assets.
   const label = category.charAt(0).toUpperCase();
 
   return L.divIcon({
@@ -60,6 +63,7 @@ export default function IncidentMapClient() {
     loadMapIncidents();
   }, []);
 
+  // Keep unplaced incidents off the map, but still available in the review table.
   const validIncidents = useMemo(() => {
     return incidents.filter(
       (incident) =>
@@ -75,6 +79,7 @@ export default function IncidentMapClient() {
       return DEFAULT_CENTER;
     }
 
+    // Center on the newest plotted incident because the API sends recent records first.
     return [
       Number(validIncidents[0].latitude),
       Number(validIncidents[0].longitude),
